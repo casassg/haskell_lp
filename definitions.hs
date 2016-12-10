@@ -7,7 +7,7 @@ data Command a = Assign Ident (NExpr a)  | Input Ident | Print (NExpr a) |
 data BExpr a= AND (BExpr a) (BExpr a) | OR (BExpr a) (BExpr a) | NOT (BExpr a) | Gt (NExpr a) (NExpr a) | Eq (NExpr a) (NExpr a)
 data NExpr a= Var Ident | Const a | Plus (NExpr a) (NExpr a) | Minus (NExpr a) (NExpr a) | Times (NExpr a) (NExpr a)
 
-tab = \x ->  replicate x '-'
+tab = \x ->  replicate (x*2) ' '
 showaux (Assign x y) i 	= (tab i)++x ++ " := " ++ (show y)++"\n"
 showaux (Input x) i 	= (tab i)++"INPUT "++x++"\n"
 showaux (Print x) i 	= (tab i)++"PRINT "++(show x)++"\n"
@@ -18,7 +18,7 @@ showaux (Size x y) i 	= (tab i)++"SIZE "++x++" "++y++"\n"
 showaux (Cond x a b) i 	= (tab i)++"IF "++(show x)++" THEN\n"++(showaux a (i+1)) ++ (tab i) ++ "ELSE\n"++(showaux b (i+1))++(tab i)++"END\n"
 showaux (Seq (x:xs)) i 	= (showaux x i)++(showaux (Seq xs) i)
 showaux (Seq []) i 		= ""
-showaux (Loop x y) i 	= (tab i)++"WHILE "++(show x)++(tab i)++"\nDO\n"++(showaux y (i+1))++(tab i)++"END\n"
+showaux (Loop x y) i 	= (tab i)++"WHILE "++(show x)++"\n"++(tab i)++"DO\n"++(showaux y (i+1))++(tab i)++"END\n"
 
 instance Show a => Show (Command a) where
 	show x =  showaux x 0
@@ -39,3 +39,9 @@ instance Show a => Show (NExpr a) where
 
 
 
+class Evaluable a where
+	eval :: (Num a, Ord a)=> (Ident -> Maybe a) -> (e a) -> (Either String a)
+	typeCheck :: (Ident -> String) -> (e a) -> Bool
+
+
+data SymTable a = IDK a
