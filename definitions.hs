@@ -271,3 +271,8 @@ interpretCommand s inp c@(Loop con com)
         cert    = fromMaybe False (getRes mcert)
         error   = getError mcert
         (eout1, ns1,ni1) = interpretCommand s inp com
+
+interpretProgram:: (Num a,Ord a) => [a] -> Command a -> (Either String [a])
+interpretProgram inp c = out
+    where
+        (out, _, _) = interpretCommand NoElem inp c
