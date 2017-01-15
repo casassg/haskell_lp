@@ -198,18 +198,16 @@ void HaskellPrintIndent(AST *a,string s)
     AST* s = child(a,1);
     cout<<"Assign \""<<f->text<<"\" ("<<HaskellPrintNExpr(s)<<")";
   } else if (a->kind=="list") {
-    cout<<"Seq (";
+    cout<<"Seq [";
     AST* i = a->down;
      while (i!=NULL && i->right!=NULL) {
-        cout<<"(";
         HaskellPrintIndent(i,"");
-        cout<<"):";
+        cout<<",";
         i = i->right;
       }
       if (i!=NULL){
-        cout<<"(";
         HaskellPrintIndent(i,"");
-        cout<<"):[])";
+        cout<<"]";
       }
   } else if (a->kind=="INPUT"){
     AST* f = child(a,0);
@@ -256,10 +254,10 @@ void HaskellPrintIndent(AST *a,string s)
 void HaskellPrint(AST *a)
 {
   while (a!=NULL) {
-    cout<<"";
     HaskellPrintIndent(a,"");
     a=a->right;
   }
+  cout<<endl;
 }
 
 int main() {

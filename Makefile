@@ -1,9 +1,12 @@
-all: compiler.c
+all: reader.c program
 	dlg -ci parser.dlg scan.c
-	g++ -o compiler compiler.c scan.c err.c
+	g++ -o reader reader.c scan.c err.c
 
-compiler.c: compiler.g
-	antlr -gt compiler.g
+reader.c: reader.g
+	antlr -gt reader.g
+
+program: program.hs
+	ghc --make program.hs
 
 clean: 
-	rm -f *.o compiler.c scan.c err.c parser.dlg tokens.h mode.h compiler
+	rm -f *.o reader.c scan.c err.c parser.dlg tokens.h mode.h reader program.hi program

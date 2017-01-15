@@ -1,0 +1,4 @@
+#!/bin/bash
+
+./reader < $1 > programhs.txt
+runhaskell program.hs < /dev/stdin
